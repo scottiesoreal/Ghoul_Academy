@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectInteractions : MonoBehaviour
 {
     // Reference to the player object (assign in Unity Inspector)
-    public GameObject playerObject;
+    public GameObject _playerObject;
 
     // Proximity distance for the interaction
     [SerializeField]
@@ -14,16 +14,16 @@ public class ObjectInteractions : MonoBehaviour
     void Start()
     {
         // Optional: Assign the player object automatically if not assigned in the Inspector
-        if (playerObject == null)
+        if (_playerObject == null)
         {
-            playerObject = GameObject.FindWithTag("Player");
+            _playerObject = GameObject.FindWithTag("Player");
         }
     }
 
     void Update()
     {
         // Calculate distance between player and object
-        float distance = Vector3.Distance(transform.position, playerObject.transform.position);
+        float distance = Vector3.Distance(transform.position, _playerObject.transform.position);
 
         // Check if player is within proximity distance
         if (distance <= proximityDistance)

@@ -7,15 +7,15 @@ public class KineticBehavior : MonoBehaviour
     // Shake parameters (these can be adjusted per object)
     private Vector3 originalPosition;
     [SerializeField]
-    private float shakeDuration = 2.0f;  // How long the shake lasts
+    private float _shakeDuration = 2.0f;  // How long the shake lasts
     [SerializeField]
-    private float shakeSpeed = 10.0f;    // Speed of the shake
+    private float _shakeSpeed = 10.0f;    // Speed of the shake
     [SerializeField]
-    private float shakeAmplitude = 0.5f; // How far the object rocks back and forth
+    private float _shakeAmplitude = 0.5f; // How far the object rocks back and forth
 
     //applying force for tossing object kinetically
     [SerializeField]
-    private float tossForce = 50f;
+    private float _tossForce = 50f;
 
     void Start()
     {
@@ -49,8 +49,8 @@ public class KineticBehavior : MonoBehaviour
                 Random.Range(-1f, 1f)    // Randomize forward/backward direction
             ).normalized;                // Normalize to keep direction consistent
 
-            // Apply a random force based on the tossForce value and random direction
-            rb.AddForce(randomDirection * tossForce);
+            // Apply a random force based on the _tossForce value and random direction
+            rb.AddForce(randomDirection * _tossForce);
 
             Debug.Log("Object tossed in direction: " + randomDirection);
         }
@@ -61,10 +61,10 @@ public class KineticBehavior : MonoBehaviour
     {
         float elapsedTime = 0.0f;  // Timer for how long the object has been shaking
 
-        while (elapsedTime < shakeDuration)
+        while (elapsedTime < _shakeDuration)
         {
             // Calculate the new X position based on a sine wave for smooth shaking
-            float newX = originalPosition.x + Mathf.Sin(Time.time * shakeSpeed) * shakeAmplitude;
+            float newX = originalPosition.x + Mathf.Sin(Time.time * _shakeSpeed) * _shakeAmplitude;
 
             // Apply the new position, keeping Y and Z unchanged
             transform.position = new Vector3(newX, originalPosition.y, originalPosition.z);
