@@ -1303,10 +1303,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212f8e2e036a8eb4da9219fdee372242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 2
-  shakeSpeed: 10
-  shakeAmplitude: 0.5
-  tossForce: 15
+  _shakeDuration: 2
+  _shakeSpeed: 10
+  _shakeAmplitude: 0.5
+  _tossForce: 50
 --- !u!114 &343594678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,8 +1319,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeed22594c00244cb54e0890b801275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 0}
-  proximityDistance: 5
+  _playerObject: {fileID: 0}
+  _proximityDistance: 5
 --- !u!1 &366687124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1646,10 +1646,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212f8e2e036a8eb4da9219fdee372242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 2
-  shakeSpeed: 10
-  shakeAmplitude: 0.5
-  tossForce: 50
+  _shakeDuration: 2
+  _shakeSpeed: 10
+  _shakeAmplitude: 0.5
+  _tossForce: 50
 --- !u!114 &417662880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1662,8 +1662,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeed22594c00244cb54e0890b801275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 0}
-  proximityDistance: 5
+  _playerObject: {fileID: 0}
+  _proximityDistance: 5
 --- !u!54 &417662881
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2734,8 +2734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeed22594c00244cb54e0890b801275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 0}
-  proximityDistance: 5
+  _playerObject: {fileID: 0}
+  _proximityDistance: 5
 --- !u!1 &739764653
 GameObject:
   m_ObjectHideFlags: 0
@@ -6692,8 +6692,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeed22594c00244cb54e0890b801275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 0}
-  proximityDistance: 5
+  _playerObject: {fileID: 0}
+  _proximityDistance: 5
 --- !u!114 &2042362144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6706,10 +6706,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212f8e2e036a8eb4da9219fdee372242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 2
-  shakeSpeed: 10
-  shakeAmplitude: 0.5
-  tossForce: 200
+  _shakeDuration: 2
+  _shakeSpeed: 10
+  _shakeAmplitude: 0.5
+  _tossForce: 300
 --- !u!114 &2042362145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6957,8 +6957,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeed22594c00244cb54e0890b801275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 0}
-  proximityDistance: 5
+  _playerObject: {fileID: 0}
+  _proximityDistance: 5
 --- !u!114 &2089905259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6971,10 +6971,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212f8e2e036a8eb4da9219fdee372242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 2
-  shakeSpeed: 10
-  shakeAmplitude: 0.5
-  tossForce: 50
+  _shakeDuration: 2
+  _shakeSpeed: 10
+  _shakeAmplitude: 0.5
+  _tossForce: 50
 --- !u!1 &2097461986
 GameObject:
   m_ObjectHideFlags: 0

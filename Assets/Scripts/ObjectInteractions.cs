@@ -9,7 +9,12 @@ public class ObjectInteractions : MonoBehaviour
 
     // Proximity distance for the interaction
     [SerializeField]
-    private float proximityDistance = 5.0f;
+    private float _proximityDistance = 5.0f;
+
+    // Cached component references
+    private KineticBehavior _kineticBehavior;
+    private ElectronicBehavior _electronicBehavior;
+    private DoorBehavior _doorBehavior;
 
     void Start()
     {
@@ -18,6 +23,11 @@ public class ObjectInteractions : MonoBehaviour
         {
             _playerObject = GameObject.FindWithTag("Player");
         }
+
+        // Cache the component references
+        _kineticBehavior = GetComponent<KineticBehavior>();
+        _electronicBehavior = GetComponent<ElectronicBehavior>();
+        _doorBehavior = GetComponent<DoorBehavior>();
     }
 
     void Update()
@@ -26,58 +36,39 @@ public class ObjectInteractions : MonoBehaviour
         float distance = Vector3.Distance(transform.position, _playerObject.transform.position);
 
         // Check if player is within proximity distance
-        if (distance <= proximityDistance)
+        if (distance <= _proximityDistance)
         {
             Debug.Log("Player near object");
 
             // Check for kinetic interaction (shaking) with key 'H'
-            if (Input.GetKeyDown(KeyCode.H))
+            if (Input.GetKeyDown(KeyCode.H) && _kineticBehavior != null)
             {
-                KineticBehavior kineticBehavior = GetComponent<KineticBehavior>();
-                if (kineticBehavior != null)
-                {
-                    kineticBehavior.TriggerKineticAction();  // Trigger the shaking or physical interaction
-                }
+                _kineticBehavior.TriggerKineticAction();  // Trigger the shaking or physical interaction
             }
 
             // Check for electronic interaction (e.g., power toggle) with key 'T'
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.T) && _electronicBehavior != null)
             {
-                ElectronicBehavior electronicBehavior = GetComponent<ElectronicBehavior>();
-                if (electronicBehavior != null)
-                {
-                    electronicBehavior.TogglePower();  // Trigger the power toggle
-                }
+                _electronicBehavior.TogglePower();  // Trigger the power toggle
             }
 
             // Check for door interaction (opening/closing) with key 'O'
-            if (Input.GetKeyDown(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.O) && _doorBehavior != null)
             {
-                DoorBehavior doorBehavior = GetComponent<DoorBehavior>();
-                if (doorBehavior != null)
-                {
-                    doorBehavior.ToggleDoor();  // Trigger door opening/closing
-                }
+                _doorBehavior.ToggleDoor();  // Trigger door opening/closing
             }
 
-            if (Input.GetKeyDown(KeyCode.G))
+            // Check for tossing the object with key 'G'
+            if (Input.GetKeyDown(KeyCode.G) && _kineticBehavior != null)
             {
-                KineticBehavior kineticBehavior = GetComponent<KineticBehavior>();
-                if (kineticBehavior != null)
-                {
-                    Debug.Log("Object tossed");
-                    kineticBehavior.TossObject();  // Trigger tossing the object
-                }
+                Debug.Log("Object tossed");
+                _kineticBehavior.TossObject();  // Trigger tossing the object
             }
 
             // Check for slamming the door with key 'P'
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(KeyCode.P) && _doorBehavior != null)
             {
-                DoorBehavior doorBehavior = GetComponent<DoorBehavior>();
-                if (doorBehavior != null)
-                {
-                    doorBehavior.SlamDoor();  // Trigger door slamming
-                }
+                _doorBehavior.SlamDoor();  // Trigger door slamming
             }
         }
     }
