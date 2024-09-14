@@ -34,7 +34,6 @@ public class TriggerZone : MonoBehaviour
             Renderer wallRenderer = wall.GetComponent<Renderer>();
             if (wallRenderer != null)
             {
-                Debug.Log("Making wall transparent:" + wall.name);
                 wallRenderer.material = _transparentMaterial;  // "Transparent_mat" in the Inspector
             }
         }
@@ -60,7 +59,6 @@ public class TriggerZone : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Make all walls transparent
-            Debug.Log("Player entered trigger zone");
             MakeWallsTransparent();
         }
     }

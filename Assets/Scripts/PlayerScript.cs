@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
+
 
 public class PlayerScript : MonoBehaviour
 {
@@ -81,7 +81,7 @@ public class PlayerScript : MonoBehaviour
             
             _playerRenderer.material = _opaqueMaterial; // make player visible
             _visibilityEndTime = Time.time + _visibilityDuration; // set visibility end time
-            Debug.Log("Player Visible! /will revert at: " + _visibilityEndTime);
+            
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
@@ -92,7 +92,7 @@ public class PlayerScript : MonoBehaviour
         if (Time.time >= _visibilityEndTime)
         {
             _playerRenderer.material = _transparentMaterial;
-            Debug.Log("Player Invisible!");
+            
         }
 
     }
