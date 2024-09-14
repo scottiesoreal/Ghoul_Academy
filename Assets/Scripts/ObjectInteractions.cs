@@ -11,17 +11,8 @@ public class ObjectInteractions : MonoBehaviour
     [SerializeField]
     private float proximityDistance = 5.0f;
 
-    // Shake parameters
-    private Vector3 originalPosition;  // To store the original position of the object
-    private float shakeDuration = 2.0f;  // How long the shake lasts
-    private float shakeSpeed = 10.0f;  // Speed of the shake
-    private float shakeAmplitude = 0.5f;  // How far the object rocks back and forth
-
     void Start()
     {
-        // Store the original position of the object at the start
-        originalPosition = transform.position;
-
         // Optional: Assign the player object automatically if not assigned in the Inspector
         if (playerObject == null)
         {
@@ -39,42 +30,55 @@ public class ObjectInteractions : MonoBehaviour
         {
             Debug.Log("Player near object");
 
-            // Wait for player to press the "H" key to trigger interaction
+            // Check for kinetic interaction (shaking) with key 'H'
             if (Input.GetKeyDown(KeyCode.H))
             {
-                Debug.Log("Player interacted with object");
-                TriggerInteraction();  // Start the interaction (shake)
+                KineticBehavior kineticBehavior = GetComponent<KineticBehavior>();
+                if (kineticBehavior != null)
+                {
+                    kineticBehavior.TriggerKineticAction();  // Trigger the shaking or physical interaction
+                }
+            }
+
+            // Check for electronic interaction (e.g., power toggle) with key 'T'
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                ElectronicBehavior electronicBehavior = GetComponent<ElectronicBehavior>();
+                if (electronicBehavior != null)
+                {
+                    electronicBehavior.TogglePower();  // Trigger the power toggle
+                }
+            }
+
+            // Check for door interaction (opening/closing) with key 'O'
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+                DoorBehavior doorBehavior = GetComponent<DoorBehavior>();
+                if (doorBehavior != null)
+                {
+                    doorBehavior.ToggleDoor();  // Trigger door opening/closing
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                KineticBehavior kineticBehavior = GetComponent<KineticBehavior>();
+                if (kineticBehavior != null)
+                {
+                    Debug.Log("Object tossed");
+                    kineticBehavior.TossObject();  // Trigger tossing the object
+                }
+            }
+
+            // Check for slamming the door with key 'P'
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                DoorBehavior doorBehavior = GetComponent<DoorBehavior>();
+                if (doorBehavior != null)
+                {
+                    doorBehavior.SlamDoor();  // Trigger door slamming
+                }
             }
         }
-    }
-
-    // Trigger the interaction (in this case, shaking)
-    private void TriggerInteraction()
-    {
-        StartCoroutine(ShakeObject());  // Start the shaking coroutine
-    }
-
-    // Coroutine to handle the shaking behavior
-    private IEnumerator ShakeObject()
-    {
-        float elapsedTime = 0.0f;  // Timer for how long the object has been shaking
-
-        while (elapsedTime < shakeDuration)
-        {
-            // Calculate the new X position based on a sine wave for smooth shaking
-            float newX = originalPosition.x + Mathf.Sin(Time.time * shakeSpeed) * shakeAmplitude;
-
-            // Apply the new position, keeping Y and Z unchanged
-            transform.position = new Vector3(newX, originalPosition.y, originalPosition.z);
-
-            // Increase elapsed time
-            elapsedTime += Time.deltaTime;
-
-            // Wait for the next frame
-            yield return null;
-        }
-
-        // After shaking, return the object to its original position
-        transform.position = originalPosition;
     }
 }
