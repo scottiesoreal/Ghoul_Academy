@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
@@ -31,13 +30,20 @@ public class PlayerScript : MonoBehaviour
 
     private Renderer _playerRenderer; // Player's renderer
 
-    // Visibility timer
-    private float _visibilityDuration = 5f; // Duration of visibility
-    private float _visibilityEndTime = 0f; // Time when visibility ends
+    // Visibility and Cooldown timers
+    private float _visibilityDuration = 5f; // Maximum duration of visibility
+    private float _cooldownDuration = 5f;  // Fixed cooldown duration
+    private float _visibilityStartTime = 0f; // Tracks when visibility started
 
-    // Track if player is invisible
+    // Track if player is invisible, on cooldown, or currently visible
     [SerializeField]
     private bool _isInvisible = true;  // Player starts as invisible
+    [SerializeField]
+    private bool _isOnCooldown = false; // Whether the player is on cooldown
+    [SerializeField]
+    private bool _isVisible = false; // Whether the player is currently visible
+
+    private Coroutine _cooldownCoroutine; // Reference to the running cooldown coroutine
 
     void Start()
     {
@@ -63,7 +69,7 @@ public class PlayerScript : MonoBehaviour
     {
         // Check for floating toggle and calculate movement
         CalculateMovement();
-        ToggleVisibility();
+        HandleVisibility();  // Updated method for handling visibility with fixed cooldown
         ToggleFloating();
         FirePlasmaShot();
     }
@@ -73,27 +79,61 @@ public class PlayerScript : MonoBehaviour
         MovePlayer();
     }
 
-    // Toggle visibility of player | player starts invisible, hold shift to make visible for 5 seconds max
-    private void ToggleVisibility()
+    // Visibility handler with fixed 5-second cooldown
+    private void HandleVisibility()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        // If the player is not on cooldown and is not visible, they can become visible
+        if (!_isOnCooldown && !_isVisible)
         {
-            _playerRenderer.material = _opaqueMaterial; // make player visible
-            _visibilityEndTime = Time.time + _visibilityDuration; // set visibility end time
-            _isInvisible = false;  // Player is visible
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            _playerRenderer.material = _transparentMaterial; // make player invisible
-            _isInvisible = true;  // Player is invisible
+            // Activate visibility when holding shift
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                _playerRenderer.material = _opaqueMaterial; // Make player visible
+                _visibilityStartTime = Time.time; // Record the start time
+                _isInvisible = false;  // Player is visible
+                _isVisible = true; // Player is currently visible
+                Debug.Log("Player became visible.");
+            }
         }
 
-        // Automatically revert player to invisible after 5 seconds
-        if (Time.time >= _visibilityEndTime)
+        // If the player is visible, check when to turn off visibility
+        if (_isVisible)
         {
-            _playerRenderer.material = _transparentMaterial;
-            _isInvisible = true;  // Player is invisible
+            // Stop visibility when releasing shift or after max visibility duration
+            if (Input.GetKeyUp(KeyCode.LeftShift) || Time.time >= _visibilityStartTime + _visibilityDuration)
+            {
+                BecomeInvisible();  // Turn invisible and trigger fixed cooldown
+            }
         }
+    }
+
+    // Method to turn the player invisible and start the fixed cooldown
+    private void BecomeInvisible()
+    {
+        _playerRenderer.material = _transparentMaterial; // Make player invisible
+        _isInvisible = true;  // Player is invisible
+        _isVisible = false;  // Player is no longer visible
+
+        Debug.Log("Cooldown started for: " + _cooldownDuration + " seconds.");
+
+        // Start the cooldown coroutine
+        if (_cooldownCoroutine != null)
+        {
+            StopCoroutine(_cooldownCoroutine); // Stop any existing cooldowns
+        }
+        _cooldownCoroutine = StartCoroutine(StartCooldownTimer());
+    }
+
+    // Coroutine to handle the fixed 5-second cooldown
+    private IEnumerator StartCooldownTimer()
+    {
+        _isOnCooldown = true;
+
+        // Wait for the fixed cooldown duration (5 seconds)
+        yield return new WaitForSeconds(_cooldownDuration);
+
+        _isOnCooldown = false; // Cooldown ends, player can become visible again
+        Debug.Log("Cooldown ended. Player can become visible again.");
     }
 
     // Public method for NPC to check invisibility status
