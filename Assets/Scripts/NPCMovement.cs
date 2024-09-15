@@ -20,12 +20,13 @@ public class NPCMovement : MonoBehaviour
     private LookDirection _currentDirection = LookDirection.Forward;
 
     // Startled behavior
+    [SerializeField]
+    private bool _isStartled = false; // Track if the NPC is startled
     private float _jumpForce = 5f;
     private Rigidbody _rb;
 
     // New NavMeshAgent variables
-    private NavMeshAgent _navMeshAgent;
-    private bool _isStartled = false; // Track if the NPC is startled
+    private NavMeshAgent _navMeshAgent;    
     public Transform[] exitPoints;  // Array to store exit points in the house
 
     void Start()
