@@ -1,16 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class NPCVision : MonoBehaviour
 {
     [SerializeField]
-    private Transform _player;         // Reference to the player
+    private Transform _player;
     [SerializeField]
-    private float _visionDistance = 10.0f;  // How far the NPC can see
+    private float _visionDistance = 10f;
     [SerializeField]
-    private float _visionAngle = 120.0f;    // Field of vision in degrees
+    private float _visionAngle = 120f;
 
-    private bool _canSeePlayer = false;    // Tracks if the NPC can see the player
-    private NPCMovement _npcMovement;      // Reference to the NPCMovement script
+    private NPCMovement _npcMovement;
+    private bool _canSeePlayer = false;
 
     void Start()
     {
@@ -19,14 +21,10 @@ public class NPCVision : MonoBehaviour
         {
             _player = GameObject.FindWithTag("Player").transform;
         }
-        Debug.Log("Attempting to retrieve NPCMvement component");
+
         // Cache the NPCMovement script
         _npcMovement = GetComponent<NPCMovement>();
-        if (_npcMovement != null)
-        {
-            Debug.Log("NPCMovement component found successfully!");
-        }
-        else
+        if (_npcMovement == null)
         {
             Debug.LogError("NPCMovement script is missing!");
         }
@@ -35,8 +33,6 @@ public class NPCVision : MonoBehaviour
     void Update()
     {
         CheckPlayerVisibility();
-
-        Debug.DrawRay(transform.position, transform.forward * _visionDistance, Color.red);
     }
 
     private void CheckPlayerVisibility()
@@ -51,6 +47,14 @@ public class NPCVision : MonoBehaviour
 
             if (angleToPlayer <= _visionAngle / 2f)
             {
+                // Check if the player is invisible
+                PlayerScript playerScript = _player.GetComponent<PlayerScript>();
+                if (playerScript != null && playerScript.IsPlayerInvisible())
+                {
+                    _canSeePlayer = false;  // Player is invisible, can't be seen
+                    return;
+                }
+
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, directionToPlayerNormalized, out hit, distanceToPlayer))
                 {
@@ -80,5 +84,4 @@ public class NPCVision : MonoBehaviour
             _canSeePlayer = false;
         }
     }
-
 }

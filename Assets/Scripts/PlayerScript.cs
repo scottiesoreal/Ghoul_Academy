@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class PlayerScript : MonoBehaviour
 {
     [SerializeField]
@@ -36,10 +35,13 @@ public class PlayerScript : MonoBehaviour
     private float _visibilityDuration = 5f; // Duration of visibility
     private float _visibilityEndTime = 0f; // Time when visibility ends
 
+    // Track if player is invisible
+    [SerializeField]
+    private bool _isInvisible = true;  // Player starts as invisible
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-
 
         if (_rb == null)
         {
@@ -50,12 +52,11 @@ public class PlayerScript : MonoBehaviour
             _rb.collisionDetectionMode = CollisionDetectionMode.Continuous; // Ensures that the player does not pass through walls/ceilings when floating
         }
 
-        //cache renderer reference at start
+        // Cache renderer reference at start
         _playerRenderer = GetComponent<Renderer>();
 
-        //set player as transparent from the start
+        // Set player as transparent from the start
         _playerRenderer.material = _transparentMaterial; // start invisible
-
     }
 
     void Update()
@@ -72,34 +73,34 @@ public class PlayerScript : MonoBehaviour
         MovePlayer();
     }
 
-    //Toggle visibility of player | player starts invisible, hold shift to make visible for 5 seconds max
-    //player can also release shift to make invisible again
+    // Toggle visibility of player | player starts invisible, hold shift to make visible for 5 seconds max
     private void ToggleVisibility()
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            
             _playerRenderer.material = _opaqueMaterial; // make player visible
             _visibilityEndTime = Time.time + _visibilityDuration; // set visibility end time
-            
+            _isInvisible = false;  // Player is visible
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _playerRenderer.material = _transparentMaterial; // make player invisible
+            _isInvisible = true;  // Player is invisible
         }
 
-        //automatically revert player to invisible after 5 seconds
+        // Automatically revert player to invisible after 5 seconds
         if (Time.time >= _visibilityEndTime)
         {
             _playerRenderer.material = _transparentMaterial;
-            
+            _isInvisible = true;  // Player is invisible
         }
-
     }
 
-
-
-
+    // Public method for NPC to check invisibility status
+    public bool IsPlayerInvisible()
+    {
+        return _isInvisible;
+    }
 
     private void ToggleFloating()
     {
@@ -154,31 +155,18 @@ public class PlayerScript : MonoBehaviour
         float currentSpeed = _isFloating ? _floatHorizontalSpeed : _speedBase;
         Vector3 movement = _inputDirection * currentSpeed * Time.deltaTime;
 
-
         // Move the player
         _rb.MovePosition(_rb.position + movement);
     }
 
     private void FirePlasmaShot()
 
-    //f key plasma fire 
+    // F key plasma fire 
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Instantiate(_plasmaPrefab, transform.position + new Vector3(0.3f,0,0), Quaternion.identity);//, transform.position + offset + Vector3.forward * _FireRate, Quaternion.identity);
+            Instantiate(_plasmaPrefab, transform.position + new Vector3(0.3f, 0, 0), Quaternion.identity);
             _canFire = Time.time + _FireRate;
-           
         }
     }
-
-    private void BecomeVisible()
-    {
-        _playerRenderer.material = _opaqueMaterial; // switch to opaque material
-    }
-
-    private void BecameInvisible()
-    {
-        _playerRenderer.material = _transparentMaterial; // switch to transparent material
-    }
-    
 }
