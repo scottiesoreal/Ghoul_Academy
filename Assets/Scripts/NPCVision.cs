@@ -64,6 +64,8 @@ public class NPCVision : MonoBehaviour
                         {
                             _npcMovement.StartleJump();
                             Debug.Log("NPC was startled");
+                            _npcMovement.RunToExit();  // Make the NPC run away after being startled
+                            Debug.Log("NPC is running away.");
                         }
                         _canSeePlayer = true;
                         Debug.Log("NPC can see the player.");

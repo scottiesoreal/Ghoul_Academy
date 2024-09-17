@@ -26,8 +26,11 @@ public class NPCMovement : MonoBehaviour
     private Rigidbody _rb;
 
     // New NavMeshAgent variables
-    private NavMeshAgent _navMeshAgent;    
+    private NavMeshAgent _navMeshAgent;
     public Transform[] exitPoints;  // Array to store exit points in the house
+    public Transform churchLocation; // Reference to the church
+
+    private bool _runToChurch = false; // Flag to indicate if running to church
 
     void Start()
     {
@@ -71,10 +74,17 @@ public class NPCMovement : MonoBehaviour
             }
         }
 
-        // If the NPC is startled, make it run to the nearest exit
+        // If the NPC is startled, make it run to the nearest exit or the church
         if (_isStartled)
         {
-            RunToExit();
+            if (_runToChurch)
+            {
+                RunToChurch();  // New method to run to the church
+            }
+            else
+            {
+                RunToExit();
+            }
         }
     }
 
@@ -88,24 +98,34 @@ public class NPCMovement : MonoBehaviour
     }
 
     // Startled NPC runaway behavior
-    public void StartleNPC()
+    public void StartleNPC(bool runToChurch = false)
     {
         _isStartled = true;
+        _runToChurch = runToChurch; // Decide if running to church or exit
         Debug.Log("NPC has been startled and is now running!");
     }
 
     // Make the NPC run to the nearest exit
-    private void RunToExit()
+    public void RunToExit()
     {
+        Debug.Log("RunToExit function called!");
+
         // Find the nearest exit point
         Transform nearestExit = GetNearestExit();
 
         if (nearestExit != null)
         {
             // Set the destination for the NPC to run to the nearest exit
-            _navMeshAgent.SetDestination(nearestExit.position);
             Debug.Log("Running to the nearest exit: " + nearestExit.name);
+            _navMeshAgent.SetDestination(nearestExit.position);
         }
+    }
+
+    // Make the NPC run to the church
+    public void RunToChurch()
+    {
+        Debug.Log("NPC is running to the church at: " + churchLocation.position);
+        _navMeshAgent.SetDestination(churchLocation.position);
     }
 
     // Find the closest exit from the array of exits
@@ -135,6 +155,7 @@ public class NPCMovement : MonoBehaviour
         // Once the NPC reaches the exit (exit points should have a collider and "Exit" tag), it stops
         if (other.CompareTag("Exit"))
         {
+            Debug.Log("NPC has reached the exit.");
             _navMeshAgent.isStopped = true;
             Debug.Log("NPC has exited the house!");
         }
