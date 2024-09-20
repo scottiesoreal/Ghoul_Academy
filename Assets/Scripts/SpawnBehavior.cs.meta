@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 57b1df7d4ac54bd4c9495ad65b63f12f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _exorcistPrefab: {fileID: 5263891343891253057, guid: 597bf7abf7dae5c4c9dd2d0763813c4c,
+      type: 3}
+  - _churchSpawnPoint: {fileID: 6283939996264650482, guid: 48d8279cbc6a936419c67544cf0a37e1,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

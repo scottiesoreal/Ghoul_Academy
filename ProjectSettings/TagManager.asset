@@ -9,6 +9,7 @@ TagManager:
   - VanishingWall
   - Exit
   - Church
+  - HumanNPC
   layers:
   - Default
   - TransparentFX
