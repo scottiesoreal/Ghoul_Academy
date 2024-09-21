@@ -127,7 +127,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -152,3 +152,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _church: {fileID: 8382400344375015333, guid: 25a5f30895211e04eb463e06665170eb, type: 3}
+  _entrance: {fileID: 7403256716993665893, guid: e561c075787595f43b74876f915f5a35,
+    type: 3}
