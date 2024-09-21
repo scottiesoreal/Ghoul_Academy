@@ -7,7 +7,7 @@ public class NPCMovement : MonoBehaviour
 {
     [SerializeField]
     private float _rotationSpeed = 50f;  // Speed of rotation
-
+    //temporary movement, will chang later
     private Quaternion _leftRotation;
     private Quaternion _rightRotation;
     private Quaternion _forwardRotation;
@@ -15,7 +15,7 @@ public class NPCMovement : MonoBehaviour
     private Quaternion _targetRotation; // The direction NPC is currently rotating towards
     private float _rotationDelay = 2f;  // Time to pause after rotating
     private float _rotationTimer = 0f;
-
+    //temp routine created
     private enum LookDirection { Forward, Left, Right }
     private LookDirection _currentDirection = LookDirection.Forward;
 

@@ -16,8 +16,7 @@ public class SpawnBehavior : MonoBehaviour
     {
         if (currentExorcist == null)
         {
-            currentExorcist = Instantiate(_exorcistPrefab, _churchSpawnPoint.position, _churchSpawnPoint.rotation);
-            currentExorcist.GetComponent<ExorcistNPC>().StartSearch();  // Start searching for rooms
+            currentExorcist = Instantiate(_exorcistPrefab, _churchSpawnPoint.position, _churchSpawnPoint.rotation);            
             Debug.Log("Exorcist spawns!");
         }
     }
