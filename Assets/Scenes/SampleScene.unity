@@ -1100,6 +1100,7 @@ GameObject:
   - component: {fileID: 190109280}
   - component: {fileID: 190109284}
   - component: {fileID: 190109285}
+  - component: {fileID: 190109286}
   m_Layer: 0
   m_Name: Church
   m_TagString: Church
@@ -1178,7 +1179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190109279}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -53.24, y: 1.3728871, z: 43.46}
+  m_LocalPosition: {x: -53.24, y: 1.86, z: 43.46}
   m_LocalScale: {x: 3.4395, y: 3.4395, z: 3.4395}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1207,13 +1208,25 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190109279}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72fbe615c030c8d41855a2c60b03c300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _transparentMaterial: {fileID: 0}
   _opaqueMaterial: {fileID: 0}
+--- !u!114 &190109286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190109279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d84fefd10407014ea4b63d6cb460614, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &204479455
 GameObject:
   m_ObjectHideFlags: 0
@@ -3475,7 +3488,7 @@ GameObject:
   - component: {fileID: 730518003}
   - component: {fileID: 730518002}
   m_Layer: 0
-  m_Name: Bathroom1E
+  m_Name: Bathroom1F
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5430,7 +5443,7 @@ GameObject:
   - component: {fileID: 1326476614}
   - component: {fileID: 1326476615}
   m_Layer: 0
-  m_Name: BedRoomEntrenceCol(3)
+  m_Name: BedRoom1EntrenceCol(3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
