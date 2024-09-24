@@ -17,6 +17,7 @@ public class ExorcistNPC : MonoBehaviour
     private List<Collider> _unvisitedRooms = new List<Collider>();
 
     // Flag to track if Exorcist has entered the house
+    [SerializeField]
     private bool _hasEnteredHouse = false;
 
     void Start()
@@ -34,7 +35,7 @@ public class ExorcistNPC : MonoBehaviour
         Debug.Log("Moving to the house entrance...");
     }
 
-    void StartRoomSearch()
+    public void StartRoomSearch()
     {
         // Find all rooms tagged with "Room" for searching
         Collider[] rooms = FindObjectsOfType<Collider>();
@@ -52,16 +53,22 @@ public class ExorcistNPC : MonoBehaviour
 
     void MoveToNextRoom()
     {
-        // If there are unvisited rooms, move to the nearest one
         if (_unvisitedRooms.Count > 0)
         {
             Collider nearestRoom = FindNearestRoom();
-            Debug.Log("Moving to next room: " + nearestRoom.name);
-            _navMeshAgent.SetDestination(nearestRoom.transform.position);
+            if (nearestRoom != null)
+            {
+                Debug.Log("Moving to next room: " + nearestRoom.name);
+                _navMeshAgent.SetDestination(nearestRoom.transform.position);
+            }
+            else
+            {
+                Debug.Log("No valid room found to move to.");
+            }
         }
         else
         {
-            // If all rooms have been visited, head to the exit
+            Debug.Log("All rooms visited. Moving to exit...");
             MoveToExit();
         }
     }

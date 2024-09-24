@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using AOT;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,23 +54,56 @@ public class TriggerZone : MonoBehaviour
         }
     }
 
-    // Detect when the player enters the trigger zone
+    // Detect when the Exorcist or NPC enters the trigger zone
     private void OnTriggerEnter(Collider other)
     {
+        // Check if the player enters the trigger zone and make walls transparent
         if (other.CompareTag("Player"))
         {
-            // Make all walls transparent
-            MakeWallsTransparent();
+            MakeWallsTransparent(); // Existing functionality for player
+        }
+
+        // Handle Exorcist entering the house
+        if (other.CompareTag("ExorcistNPC"))
+        {
+            // Exorcist enters the house and starts searching rooms
+            ExorcistNPC exorcist = other.GetComponent<ExorcistNPC>();//
+            if (exorcist != null)
+            {
+                exorcist.StartRoomSearch(); // Call the method to begin room search
+                Debug.Log("Exorcist entered the house, starting room search...");
+            }
+        }
+
+        // Handle NPCs exiting the house and running to the church
+        if (other.CompareTag("HumanNPC"))
+        {
+            // Get the NPC's vision script
+            NPCVision npcVision = other.GetComponent<NPCVision>();
+
+            // Only run to church if the NPC can see the player/ghost
+            if (npcVision != null && npcVision.CanSeePlayer())
+            {
+                NPCMovement npc = other.GetComponent<NPCMovement>();
+                if (npc != null)
+                {
+                    npc.RunToChurch();  // Only run to the church if ghost is visible
+                    Debug.Log("NPC saw the ghost, running to church...");
+                }
+            }
+            else
+            {
+                Debug.Log("NPC can't see the ghost, staying in place...");
+            }
         }
     }
 
-    // Detect when the player exits the trigger zone
+    // Detect when the Player exits the trigger zone
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // Revert all walls to opaque
-            
+            // Revert all walls to opaque when player exits
             MakeWallsOpaque();
         }
     }

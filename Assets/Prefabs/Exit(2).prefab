@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7403256716993665892
+--- !u!1 &2802354722755243271
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,37 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7403256716993665893}
-  - component: {fileID: 7403256716993665894}
+  - component: {fileID: 2802354722755243289}
+  - component: {fileID: 2802354722755243288}
   m_Layer: 0
-  m_Name: Exit(1)
+  m_Name: Exit(2)
   m_TagString: Exit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7403256716993665893
+--- !u!4 &2802354722755243289
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7403256716993665892}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.63, y: 2.27, z: 27.36}
-  m_LocalScale: {x: 0.25967363, y: 3.2410333, z: 2.0162194}
+  m_GameObject: {fileID: 2802354722755243271}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 6.52, y: 2.09, z: 28.85}
+  m_LocalScale: {x: 0.124495, y: 4.1397448, z: 3.0418208}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &7403256716993665894
+--- !u!65 &2802354722755243288
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7403256716993665892}
+  m_GameObject: {fileID: 2802354722755243271}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1

@@ -246,9 +246,10 @@ MonoBehaviour:
   _rotationSpeed: 50
   _isStartled: 0
   exitPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  churchLocation: {fileID: 0}
+  - {fileID: 7403256716993665893, guid: e561c075787595f43b74876f915f5a35, type: 3}
+  - {fileID: 2802354722755243289, guid: 3e0e41d8b94403c4d9497844f8114c5f, type: 3}
+  churchLocation: {fileID: 8382400344375015333, guid: 25a5f30895211e04eb463e06665170eb,
+    type: 3}
 --- !u!195 &1749792529243169267
 NavMeshAgent:
   m_ObjectHideFlags: 0

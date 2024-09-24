@@ -52,6 +52,7 @@ public class NPCVision : MonoBehaviour
                 if (playerScript != null && playerScript.IsPlayerInvisible())
                 {
                     _canSeePlayer = false;  // Player is invisible, can't be seen
+                    Debug.Log("Player is invisible");
                     return;
                 }
 
@@ -85,5 +86,10 @@ public class NPCVision : MonoBehaviour
         {
             _canSeePlayer = false;
         }
+    }
+
+    public bool CanSeePlayer()
+    {
+        return _canSeePlayer;
     }
 }
