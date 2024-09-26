@@ -14,6 +14,10 @@ public class TriggerZone : MonoBehaviour
     [SerializeField]
     private Material _opaqueMaterial;       // Assign "HouseFloor_mat" in the Inspector
 
+    //transparency check
+    //[SerializeField]
+    //private bool _isTransparent = false;
+
     void Start()
     {
         // Find all walls with the tag "VanishingWall" and store them in the list
@@ -58,8 +62,8 @@ public class TriggerZone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Check if the player enters the trigger zone and make walls transparent
-        if (other.CompareTag("Player"))
-        {
+        if (other.CompareTag("Player"))        {
+            
             MakeWallsTransparent(); // Existing functionality for player
         }
 

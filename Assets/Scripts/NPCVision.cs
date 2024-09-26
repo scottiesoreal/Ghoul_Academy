@@ -14,6 +14,26 @@ public class NPCVision : MonoBehaviour
     private NPCMovement _npcMovement;
     private bool _canSeePlayer = false;
 
+    //spook state & level
+    [SerializeField]
+    private float _spookLevel = 0f;//starting spook level is in calm state
+    [SerializeField]
+    private float _maxSpookLevel = 100f;//max spook level that causes NPC to run
+    [SerializeField]
+    private float _spookIncreaseRate = 10f;//increase rate when scaring NPCs
+    [SerializeField]
+    private bool _isSpooked = false;//spook level is activated
+    [SerializeField]
+    private float _lastSpookedTime; //last time NPC was spooked
+    [SerializeField]
+    private float _calmRegenRate = 5f;//decrease rate when not scaring NPCs
+
+    //Calm state
+    [SerializeField]
+    private bool _isCalm = true;//default NPC state
+    
+
+
     void Start()
     {
         // Assign player object automatically; no need for manual inspector assignment
@@ -70,6 +90,25 @@ public class NPCVision : MonoBehaviour
                         }
                         _canSeePlayer = true;
                         Debug.Log("NPC can see the player.");
+
+                        //Increase spook level
+                        _isCalm = false;
+                        _isSpooked = true;
+                        Debug.Log("NPC is spooked");
+                        _lastSpookedTime = Time.time; // track the last time NPC was spooked
+                        _spookLevel += _spookIncreaseRate * Time.deltaTime;
+
+                        //spook level clamp
+                        if (_spookLevel >= _maxSpookLevel)
+                        {
+                            _spookLevel = _maxSpookLevel;
+                            Debug.Log("NPC has reached maximum spook level!");
+
+                            // Run to the church
+                            _npcMovement.RunToChurch();
+                            Debug.Log("NPC maxed spook, running to church...");
+                        }
+
                     }
                     else
                     {
