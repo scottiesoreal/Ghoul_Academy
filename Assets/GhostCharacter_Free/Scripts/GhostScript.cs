@@ -42,6 +42,7 @@ namespace Sample
         [SerializeField]
         private float _cooldownDuration = 5.0f;    // Duration of cooldown
         private bool _isOnCooldown = false;
+        private bool _isVisible = false;  // To track if ghost is currently visible
         private Coroutine _visibilityCoroutine = null;
 
         void Start()
@@ -66,7 +67,8 @@ namespace Sample
 
         private void HandleVisibility()
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !_isOnCooldown)
+            // Only trigger visibility if not visible and not on cooldown
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !_isOnCooldown && !_isVisible)
             {
                 if (_visibilityCoroutine != null)
                 {
@@ -80,6 +82,9 @@ namespace Sample
 
         private IEnumerator FadeToOpaqueAndThenBack()
         {
+            // Mark the ghost as visible
+            _isVisible = true;
+
             // Fade to opaque
             float elapsedTime = 0.0f;
             while (elapsedTime < _fadeDuration)
@@ -102,6 +107,9 @@ namespace Sample
                 ApplyTransparency(_ghostTransparency);
                 yield return null;
             }
+
+            // Mark the ghost as no longer visible
+            _isVisible = false;
 
             // Start cooldown
             _isOnCooldown = true;
