@@ -28,6 +28,10 @@ namespace Sample
         private const int maxHP = 3;
         private int HP = maxHP;
         private Text HP_text;
+        [SerializeField]
+        private float fadeDuration = 2.0f; // Duration of fade effect
+        [SerializeField]
+        private float ghostTransparency = 0.2268818f; // Start partially transparent
 
         void Start()
         {
@@ -35,6 +39,18 @@ namespace Sample
             Ctrl = this.GetComponent<CharacterController>();
             HP_text = GameObject.Find("Canvas/HP").GetComponent<Text>();
             HP_text.text = "HP " + HP.ToString();
+        }
+
+        void ApplyTransparency(float transparencyValue)
+        {
+            // Apply the transparency value to the ghost's materials
+            foreach (var meshRenderer in MeshR)
+            {
+                foreach (var material in meshRenderer.materials)
+                {
+                    material.SetFloat("_GhostTransparency", transparencyValue); // Set shader transparency
+                }
+            }
         }
 
         void Update()
@@ -50,9 +66,6 @@ namespace Sample
             ToggleFloating();
         }
 
-        //---------------------------------------------------------------------
-        // Handle Movement with Arrow Keys
-        //---------------------------------------------------------------------
         private void HandleMovement()
         {
             float moveHorizontal = 0;
@@ -158,8 +171,32 @@ namespace Sample
         //---------------------------------------------------------------------
         private void HandleVisibility()
         {
-            // This is where you add transparency logic, likely using the material/shader transparency.
-            // Set the alpha of the ghost's material based on conditions.
+            // Press LeftShift to make the ghost fade in (turn opaque)
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                StartCoroutine(FadeToOpaque());  // Start the fading effect
+            }
+        }
+
+        private IEnumerator FadeToOpaque()
+        {
+            float elapsedTime = 0.0f;
+
+            while (elapsedTime < fadeDuration)
+            {
+                elapsedTime += Time.deltaTime;  // Keep track of time
+                ghostTransparency = Mathf.Lerp(0.0f, 1.0f, elapsedTime / fadeDuration); // Change transparency gradually
+
+                // Apply the transparency value to the material
+                foreach (var meshRenderer in MeshR)
+                {
+                    foreach (var material in meshRenderer.materials)
+                    {
+                        material.SetFloat("_GhostTransparency", ghostTransparency); // Set shader transparency
+                    }
+                }
+                yield return null;  // Wait until next frame
+            }
         }
 
         //---------------------------------------------------------------------
