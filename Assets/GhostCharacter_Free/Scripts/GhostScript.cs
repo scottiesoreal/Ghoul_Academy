@@ -39,6 +39,9 @@ namespace Sample
             Ctrl = this.GetComponent<CharacterController>();
             HP_text = GameObject.Find("Canvas/HP").GetComponent<Text>();
             HP_text.text = "HP " + HP.ToString();
+
+            // Apply the initial ghostTransparency value when the game starts
+            ApplyTransparency(ghostTransparency);
         }
 
         void ApplyTransparency(float transparencyValue)
@@ -48,7 +51,7 @@ namespace Sample
             {
                 foreach (var material in meshRenderer.materials)
                 {
-                    material.SetFloat("_GhostTransparency", transparencyValue); // Set shader transparency
+                    material.SetFloat("GhostTransparency", transparencyValue); // Set shader transparency
                 }
             }
         }
