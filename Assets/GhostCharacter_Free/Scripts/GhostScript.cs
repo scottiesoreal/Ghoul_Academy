@@ -77,9 +77,14 @@ namespace Sample
                 moveHorizontal = 1f;
             }
 
+            // Calculate the movement vector
             Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+            float speed = movement.magnitude;  // Speed based on movement
 
-            if (movement.magnitude > 0)
+            // Set the Speed parameter in the Animator
+            Anim.SetFloat("Speed", speed);
+
+            if (speed > 0)
             {
                 // Move and rotate character
                 Ctrl.Move(movement * SpeedBase * SpeedMultiplier * Time.deltaTime);
@@ -87,15 +92,9 @@ namespace Sample
                 // Smoothly rotate the ghost in the direction of movement
                 Quaternion toRotation = Quaternion.LookRotation(movement, Vector3.up);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, RotationSpeed * Time.deltaTime);
-
-                Anim.CrossFade("move", 0.1f); // Trigger moving animation
-            }
-            else
-            {
-                Anim.CrossFade("idle", 0.1f); // Trigger idle animation
             }
 
-            // Floating mechanics
+            // Floating mechanics (if enabled)
             if (isFloating)
             {
                 if (Input.GetKey(KeyCode.Q)) // Float upwards
@@ -119,6 +118,7 @@ namespace Sample
             // Apply vertical movement (floating or gravity)
             Ctrl.Move(new Vector3(0, verticalVelocity, 0) * Time.deltaTime);
         }
+
 
         //---------------------------------------------------------------------
         // Apply Gravity (when floating is off)
@@ -169,18 +169,14 @@ namespace Sample
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                Debug.Log("Player attack");
+                //Debug.Log("Player attack");
                 Anim.SetTrigger("Attack"); // Trigger attack
-                StartCoroutine(ResetAttackTrigger());
+               
             }
         }
 
         // Reset the attack trigger after a short delay
-        private IEnumerator ResetAttackTrigger()
-        {
-            yield return new WaitForSeconds(0.5f); // Adjust time to match animation length
-            Anim.ResetTrigger("Attack");
-        }
+       
 
 
         //---------------------------------------------------------------------
