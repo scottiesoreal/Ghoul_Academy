@@ -150,12 +150,12 @@ public class PlayerScript : MonoBehaviour
 
             if (_isFloating)
             {
-                // Turn off gravity when floating
+                // Turn off _gravity when floating
                 _rb.useGravity = false;
             }
             else
             {
-                // Re-enable gravity when walking
+                // Re-enable _gravity when walking
                 _rb.useGravity = true;
             }
         }
