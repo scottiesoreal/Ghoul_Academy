@@ -36,47 +36,58 @@ public class NPCVision : MonoBehaviour
 
     private void CheckPlayerVisibility()
     {
+        // Calculate the direction and distance to the player
         Vector3 directionToPlayer = _player.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
+
+        // Get the forward vector of the NPC
+        Vector3 forward = transform.forward;
+
+        // Calculate the angle between the NPC's forward vector and the direction to the player
+        float angleToPlayer = Vector3.Angle(forward, directionToPlayer);
 
         // Visualize the ray
         Debug.DrawRay(transform.position, directionToPlayer.normalized * _visionDistance, Color.red);
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, directionToPlayer.normalized, out hit, distanceToPlayer))
+        // Check if player is within NPC's field of view
+        if (angleToPlayer < _visionAngle / 2 && distanceToPlayer <= _visionDistance)
         {
-            Debug.Log("Raycast hit object: " + hit.collider.name);
-
-            if (hit.collider.CompareTag("Player"))
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, directionToPlayer.normalized, out hit, distanceToPlayer))
             {
-                // Get the GhostScript component to check visibility
-                GhostScript ghostScript = _player.GetComponent<GhostScript>();
+                Debug.Log("Raycast hit object: " + hit.collider.name);
 
-                // Use the existing IsPlayerInvisible() method to check if the ghost is invisible
-                if (ghostScript != null && ghostScript.IsVisible())  // Ensure the ghost is visible
+                if (hit.collider.CompareTag("Player"))
                 {
-                    Debug.Log("Ghost is visible.");
+                    // Get the GhostScript component to check visibility
+                    GhostScript ghostScript = _player.GetComponent<GhostScript>();
 
-                    if (!_canSeePlayer)
+                    // Use the existing IsPlayerInvisible() method to check if the ghost is invisible
+                    if (ghostScript != null && ghostScript.IsVisible())  // Ensure the ghost is visible
                     {
-                        _npcMovement.StartleJump();
-                        Debug.Log("NPC was startled by the visible ghost and is running to the exit.");
-                        _npcMovement.RunToExit();
-                    }
+                        Debug.Log("Ghost is visible.");
 
-                    _canSeePlayer = true;
-                    Debug.Log("NPC can see the ghost.");
+                        if (!_canSeePlayer)
+                        {
+                            _npcMovement.StartleJump();
+                            Debug.Log("NPC was startled by the visible ghost and is running to the exit.");
+                            _npcMovement.RunToExit();
+                        }
+
+                        _canSeePlayer = true;
+                        Debug.Log("NPC can see the ghost.");
+                    }
+                    else
+                    {
+                        _canSeePlayer = false;
+                        Debug.Log("Ghost is invisible, NPC cannot see the ghost.");
+                    }
                 }
                 else
                 {
                     _canSeePlayer = false;
-                    Debug.Log("Ghost is invisible, NPC cannot see the ghost.");
+                    Debug.Log("Raycast hit something else, NPC cannot see the ghost.");
                 }
-            }
-            else
-            {
-                _canSeePlayer = false;
-                Debug.Log("Raycast hit something else, NPC cannot see the ghost.");
             }
         }
         else
