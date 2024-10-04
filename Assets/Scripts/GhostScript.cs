@@ -42,6 +42,7 @@ namespace Sample
         [SerializeField]
         private float _cooldownDuration = 5.0f;    // Duration of cooldown
         private bool _isOnCooldown = false;
+        [SerializeField]
         private bool _isVisible = false;  // To track if ghost is currently visible
         private Coroutine _visibilityCoroutine = null;
 
@@ -218,6 +219,12 @@ namespace Sample
                     Ctrl.enabled = false;
                 }
             }
+        }
+
+        // New method added to check visibility from other scripts
+        public bool IsVisible()
+        {
+            return _isVisible;
         }
     }
 }

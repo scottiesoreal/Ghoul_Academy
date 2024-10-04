@@ -1,48 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sample;
 
 public class NPCVision : MonoBehaviour
 {
     [SerializeField]
-    private Transform _player;
+    private Transform _player;  // Reference to the player (ghost)
     [SerializeField]
-    private float _visionDistance = 10f;
+    private float _visionDistance = 10f;  // How far the NPC can see
     [SerializeField]
-    private float _visionAngle = 120f;
+    private float _visionAngle = 120f;  // NPC's field of view
 
-    private NPCMovement _npcMovement;
-    private bool _canSeePlayer = false;
-
-    //spook state & level
-    [SerializeField]
-    private float _spookLevel = 0f;//starting spook level is in calm state
-    [SerializeField]
-    private float _maxSpookLevel = 100f;//max spook level that causes NPC to run
-    [SerializeField]
-    private float _spookIncreaseRate = 10f;//increase rate when scaring NPCs
-    [SerializeField]
-    private bool _isSpooked = false;//spook level is activated
-    [SerializeField]
-    private float _lastSpookedTime; //last time NPC was spooked
-    [SerializeField]
-    private float _calmRegenRate = 5f;//decrease rate when not scaring NPCs
-
-    //Calm state
-    [SerializeField]
-    private bool _isCalm = true;//default NPC state
-    
-
+    private NPCMovement _npcMovement;  // Reference to NPCMovement script
+    private bool _canSeePlayer = false;  // Tracks if the NPC can see the player
 
     void Start()
     {
-        // Assign player object automatically; no need for manual inspector assignment
         if (_player == null)
         {
-            _player = GameObject.FindWithTag("Player").transform;
+            _player = GameObject.FindWithTag("Player").transform;  // Auto-assign player if not set
         }
 
-        // Cache the NPCMovement script
         _npcMovement = GetComponent<NPCMovement>();
         if (_npcMovement == null)
         {
@@ -60,70 +39,50 @@ public class NPCVision : MonoBehaviour
         Vector3 directionToPlayer = _player.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
 
-        if (distanceToPlayer <= _visionDistance)
+        // Visualize the ray
+        Debug.DrawRay(transform.position, directionToPlayer.normalized * _visionDistance, Color.red);
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, directionToPlayer.normalized, out hit, distanceToPlayer))
         {
-            Vector3 directionToPlayerNormalized = directionToPlayer.normalized;
-            float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayerNormalized);
+            Debug.Log("Raycast hit object: " + hit.collider.name);
 
-            if (angleToPlayer <= _visionAngle / 2f)
+            if (hit.collider.CompareTag("Player"))
             {
-                // Check if the player is invisible
-                PlayerScript playerScript = _player.GetComponent<PlayerScript>();
-                if (playerScript != null && playerScript.IsPlayerInvisible())
+                // Get the GhostScript component to check visibility
+                GhostScript ghostScript = _player.GetComponent<GhostScript>();
+
+                // Use the existing IsPlayerInvisible() method to check if the ghost is invisible
+                if (ghostScript != null && ghostScript.IsVisible())  // Ensure the ghost is visible
                 {
-                    _canSeePlayer = false;  // Player is invisible, can't be seen
-                    Debug.Log("Player is invisible");
-                    return;
+                    Debug.Log("Ghost is visible.");
+
+                    if (!_canSeePlayer)
+                    {
+                        _npcMovement.StartleJump();
+                        Debug.Log("NPC was startled by the visible ghost and is running to the exit.");
+                        _npcMovement.RunToExit();
+                    }
+
+                    _canSeePlayer = true;
+                    Debug.Log("NPC can see the ghost.");
                 }
-
-                RaycastHit hit;
-                if (Physics.Raycast(transform.position, directionToPlayerNormalized, out hit, distanceToPlayer))
+                else
                 {
-                    if (hit.collider.CompareTag("Player"))
-                    {
-                        if (!_canSeePlayer)
-                        {
-                            _npcMovement.StartleJump();
-                            Debug.Log("NPC was startled");
-                            _npcMovement.RunToExit();  // Make the NPC run away after being startled
-                            Debug.Log("NPC is running away.");
-                        }
-                        _canSeePlayer = true;
-                        Debug.Log("NPC can see the player.");
-
-                        //Increase spook level
-                        _isCalm = false;
-                        _isSpooked = true;
-                        Debug.Log("NPC is spooked");
-                        _lastSpookedTime = Time.time; // track the last time NPC was spooked
-                        _spookLevel += _spookIncreaseRate * Time.deltaTime;
-
-                        //spook level clamp
-                        if (_spookLevel >= _maxSpookLevel)
-                        {
-                            _spookLevel = _maxSpookLevel;
-                            Debug.Log("NPC has reached maximum spook level!");
-
-                            // Run to the church
-                            _npcMovement.RunToChurch();
-                            Debug.Log("NPC maxed spook, running to church...");
-                        }
-
-                    }
-                    else
-                    {
-                        _canSeePlayer = false;
-                    }
+                    _canSeePlayer = false;
+                    Debug.Log("Ghost is invisible, NPC cannot see the ghost.");
                 }
             }
             else
             {
                 _canSeePlayer = false;
+                Debug.Log("Raycast hit something else, NPC cannot see the ghost.");
             }
         }
         else
         {
             _canSeePlayer = false;
+            Debug.Log("Raycast did not hit any object.");
         }
     }
 
