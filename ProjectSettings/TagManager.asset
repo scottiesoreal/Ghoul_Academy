@@ -12,6 +12,7 @@ TagManager:
   - HumanNPC
   - Room
   - ExorcistNPC
+  - Door
   layers:
   - Default
   - TransparentFX
