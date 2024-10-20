@@ -1,0 +1,3 @@
+repository "Ghoul_Academy@SpectralEvictions@cloud"
+  path "/"
+    smartbranch "/main"

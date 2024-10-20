@@ -1,0 +1,15 @@
+0000000000000000000000000000000000000000 072f74bb339696413e3e30308b542a31c60f09b2 scottiesoreal <scottiesoreal@gmail.com> 1726262221 -0600	branch: Created from main
+072f74bb339696413e3e30308b542a31c60f09b2 56d9673bd6334571dcf4b3c75a345dadac18bbb2 scottiesoreal <scottiesoreal@gmail.com> 1726888497 -0600	merge main: Fast-forward
+56d9673bd6334571dcf4b3c75a345dadac18bbb2 e4a8a48d6043eea040e874d2f7eb38102cb9013f scottiesoreal <scottiesoreal@gmail.com> 1727825371 -0600	reset: moving to e4a8a48
+e4a8a48d6043eea040e874d2f7eb38102cb9013f 00fc92ebc288a7c6a73e6fb3a62e7c24a46ff71c scottiesoreal <scottiesoreal@gmail.com> 1727849593 -0600	commit: still working on the animation getting stuck
+00fc92ebc288a7c6a73e6fb3a62e7c24a46ff71c 175295f251c071a63cce65132c7acc6c33e94242 scottiesoreal <scottiesoreal@gmail.com> 1727927764 -0600	commit: idle, walking animations working well; next working on invisibility
+175295f251c071a63cce65132c7acc6c33e94242 ffaf22d34973a9f66b424748a4762b6344904c42 scottiesoreal <scottiesoreal@gmail.com> 1727932634 -0600	commit: ghost phades in, not out, and working on initial transparency at start
+ffaf22d34973a9f66b424748a4762b6344904c42 890ebfad7c55ae52362f571cfdbc1370b4602dce scottiesoreal <scottiesoreal@gmail.com> 1727934763 -0600	commit: starting out transparent, still not controlling how transparent to start
+890ebfad7c55ae52362f571cfdbc1370b4602dce b5e936a1a6915f3a12cb45e68e2daab64545e7fa scottiesoreal <scottiesoreal@gmail.com> 1727940572 -0600	commit: got him to shift back; needs cool down timer to keep from beig able to spam visibility
+b5e936a1a6915f3a12cb45e68e2daab64545e7fa 9a58afdf2922215e52b775a82fd990996d26ea1c scottiesoreal <scottiesoreal@gmail.com> 1727942572 -0600	commit: moved ghost up to prepare testing NPC sight
+9a58afdf2922215e52b775a82fd990996d26ea1c 997d3e416ecf380e6e055be28ddc6d65ad6974d8 scottiesoreal <scottiesoreal@gmail.com> 1728002641 -0600	commit: finally got the visibility thing squared away
+997d3e416ecf380e6e055be28ddc6d65ad6974d8 d5ff69a1d22a1b89e5aafaaf8d34b5510b9f4218 scottiesoreal <scottiesoreal@gmail.com> 1728015060 -0600	commit: added new asset to try for NPC; also fixed sight issue of ghost dispite ray cast 360 follow
+d5ff69a1d22a1b89e5aafaaf8d34b5510b9f4218 ed35e3159697116d7bb27e0d4e8ac641c8b511aa scottiesoreal <scottiesoreal@gmail.com> 1728032377 -0600	commit: no real changes, just moved around some assets, see last log
+ed35e3159697116d7bb27e0d4e8ac641c8b511aa 45cb6d3906ea358d9a6ee22b41ec00a6d1319f61 scottiesoreal <scottiesoreal@gmail.com> 1728049416 -0600	commit: new assets, getting ready to build house
+45cb6d3906ea358d9a6ee22b41ec00a6d1319f61 eefe100b0e4268b0c4cdfdcc078e2a7c9bba6ad1 scottiesoreal <scottiesoreal@gmail.com> 1728194742 -0600	commit: setting up prefab houses for testing, got color to work, working on door hinge system
+eefe100b0e4268b0c4cdfdcc078e2a7c9bba6ad1 98571dba4ad0b1d8a9821fd1f0b7eea700ff25d7 scottiesoreal <scottiesoreal@gmail.com> 1728194883 -0600	commit: one more commit, see previous for updates
