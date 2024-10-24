@@ -45,6 +45,7 @@ namespace Sample
         [SerializeField]
         private bool _isVisible = false;  // To track if ghost is currently visible
         private Coroutine _visibilityCoroutine = null;
+        private bool _manualFadeOut = false; // NEW: Tracks if manual fade-out has been triggered
 
         void Start()
         {
@@ -68,22 +69,29 @@ namespace Sample
 
         private void HandleVisibility()
         {
-            // Only trigger visibility if not visible and not on cooldown
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !_isOnCooldown && !_isVisible)
+            // NEW: Check if the ghost is visible and we want to make it invisible manually
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !_isOnCooldown)
             {
-                if (_visibilityCoroutine != null)
+                // If ghost is already visible, fade back out manually
+                if (_isVisible)
                 {
-                    StopCoroutine(_visibilityCoroutine);  // Stop any existing coroutine
+                    _manualFadeOut = true;
                 }
+                else if (!_isVisible)
+                {
+                    if (_visibilityCoroutine != null)
+                    {
+                        StopCoroutine(_visibilityCoroutine);  // Stop any existing coroutine
+                    }
 
-                // Start the visibility coroutine to handle fading in and back out
-                _visibilityCoroutine = StartCoroutine(FadeToOpaqueAndThenBack());
+                    // Start the visibility coroutine to handle fading in and back out
+                    _visibilityCoroutine = StartCoroutine(FadeToOpaqueAndThenBack());
+                }
             }
         }
 
         private IEnumerator FadeToOpaqueAndThenBack()
         {
-            // Mark the ghost as visible
             _isVisible = true;
 
             // Fade to opaque
@@ -96,8 +104,16 @@ namespace Sample
                 yield return null;
             }
 
-            // Stay visible for the duration of _visibilityDuration
-            yield return new WaitForSeconds(_visibilityDuration);
+            // Stay visible until duration or manual fade-out
+            float visibilityTimer = 0f;
+            while (visibilityTimer < _visibilityDuration && !_manualFadeOut)
+            {
+                visibilityTimer += Time.deltaTime;
+                yield return null;
+            }
+
+            // Reset manual fade-out flag
+            _manualFadeOut = false;
 
             // Fade back to transparent
             elapsedTime = 0.0f;
