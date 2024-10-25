@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8179027318258141931
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6686199668390508456}
+  m_Layer: 0
+  m_Name: ObjectHold
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6686199668390508456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8179027318258141931}
+  m_LocalRotation: {x: -0.42387465, y: -0.54047626, z: -0.61876166, w: -0.38124773}
+  m_LocalPosition: {x: -0.00016380998, y: 0.000089376015, z: -0.00015398198}
+  m_LocalScale: {x: 0.0100000035, y: 0.010000003, z: 0.010000009}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4853121572219059248}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2362906512513262156
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15,7 +46,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 46f311046d2104da8b56be3d0a49a119,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -31.51
+      value: -29.882
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 46f311046d2104da8b56be3d0a49a119,
         type: 3}
@@ -99,24 +130,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.4, z: -0.1}
---- !u!114 &8187149099244390851
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3173862521899736861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f57bdc949fce340f8968c5bc86276031, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpeedBase: 4
-  SpeedMultiplier: 1
-  RotationSpeed: 720
-  isFloating: 1
-  MeshR:
-  - {fileID: 2875970460735815508}
 --- !u!95 &4830063434745672716
 Animator:
   serializedVersion: 5
@@ -138,3 +151,36 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8187149099244390851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3173862521899736861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f57bdc949fce340f8968c5bc86276031, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedBase: 4
+  _speedMultiplier: 1
+  _rotationSpeed: 720
+  _isFloating: 0
+  _slowTimeScale: 0.1
+  _screenDarkOverlay: {fileID: 0}
+  _darkAlpha: 0.5
+  _isTeleportModeActive: 0
+  MeshR:
+  - {fileID: 2875970460735815508}
+  _fadeDuration: 2
+  _ghostTransparency: 0.2268818
+  _visibilityDuration: 5
+  _cooldownDuration: 5
+  _isVisible: 0
+--- !u!4 &4853121572219059248 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7175213524714102396, guid: 46f311046d2104da8b56be3d0a49a119,
+    type: 3}
+  m_PrefabInstance: {fileID: 2362906512513262156}
+  m_PrefabAsset: {fileID: 0}

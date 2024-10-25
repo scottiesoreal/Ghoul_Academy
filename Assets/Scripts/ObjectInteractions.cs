@@ -7,14 +7,24 @@ public class ObjectInteractions : MonoBehaviour
     // Reference to the player object (assign in Unity Inspector)
     public GameObject _playerObject;
 
-    // Proximity distance for the interaction
+    // Proximity distances for interactions
     [SerializeField]
-    private float _proximityDistance = 5.0f;
+    private float _proximityDistance = 5.0f;      // General interaction proximity
+    [SerializeField]
+    private float _pickupProximityDistance = 2.0f; // Specific distance for item pickup
 
-    // Cached component references
+    // Cached component references for different interaction types
     private KineticBehavior _kineticBehavior;
     private ElectronicBehavior _electronicBehavior;
     private DoorBehavior _doorBehavior;
+
+    // Reference for item interactions with KleptoScript
+    private KleptoScript _detectedItem = null; // Currently detected item
+    private KleptoScript _heldItem = null;     // Currently held item
+
+    // Hold position for item
+    [SerializeField]
+    private Transform _holdPosition;
 
     void Start()
     {
@@ -35,41 +45,90 @@ public class ObjectInteractions : MonoBehaviour
         // Calculate distance between player and object
         float distance = Vector3.Distance(transform.position, _playerObject.transform.position);
 
-        // Check if player is within proximity distance
+        // Check if player is within general proximity distance
         if (distance <= _proximityDistance)
         {
             Debug.Log("Player near object");
 
-            // Check for kinetic interaction (shaking) with key 'H'
-            if (Input.GetKeyDown(KeyCode.H) && _kineticBehavior != null)
-            {
-                _kineticBehavior.TriggerKineticAction();  // Trigger the shaking or physical interaction
-            }
+            // Handle other interactions
+            HandleObjectInteractions();
+        }
 
-            // Check for electronic interaction (e.g., power toggle) with key 'T'
-            if (Input.GetKeyDown(KeyCode.T) && _electronicBehavior != null)
+        // Check for item pickup/drop within closer pickup distance
+        if (distance <= _pickupProximityDistance)
+        {
+            // Check for item pickup/drop with key 'E'
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                _electronicBehavior.TogglePower();  // Trigger the power toggle
+                if (_heldItem == null)
+                {
+                    TryPickupItem();
+                }
+                else
+                {
+                    DropItem();
+                }
             }
+        }
+    }
 
-            // Check for door interaction (opening/closing) with key 'O'
-            if (Input.GetKeyDown(KeyCode.O) && _doorBehavior != null)
-            {
-                _doorBehavior.ToggleDoor();  // Trigger door opening/closing
-            }
+    private void HandleObjectInteractions()
+    {
+        // Check for kinetic interaction (shaking) with key 'H'
+        if (Input.GetKeyDown(KeyCode.H) && _kineticBehavior != null)
+        {
+            _kineticBehavior.TriggerKineticAction();
+        }
 
-            // Check for tossing the object with key 'G'
-            if (Input.GetKeyDown(KeyCode.G) && _kineticBehavior != null)
-            {
-                Debug.Log("Object tossed");
-                _kineticBehavior.TossObject();  // Trigger tossing the object
-            }
+        // Check for electronic interaction (e.g., power toggle) with key 'T'
+        if (Input.GetKeyDown(KeyCode.T) && _electronicBehavior != null)
+        {
+            _electronicBehavior.TogglePower();
+        }
 
-            // Check for slamming the door with key 'P'
-            if (Input.GetKeyDown(KeyCode.P) && _doorBehavior != null)
+        // Check for door interaction (opening/closing) with key 'O'
+        if (Input.GetKeyDown(KeyCode.O) && _doorBehavior != null)
+        {
+            _doorBehavior.ToggleDoor();
+        }
+
+        // Check for tossing the object with key 'G'
+        if (Input.GetKeyDown(KeyCode.G) && _kineticBehavior != null)
+        {
+            _kineticBehavior.TossObject();
+        }
+
+        // Check for slamming the door with key 'P'
+        if (Input.GetKeyDown(KeyCode.P) && _doorBehavior != null)
+        {
+            _doorBehavior.SlamDoor();
+        }
+    }
+
+    private void TryPickupItem()
+    {
+        // Detect nearby items with KleptoScript within pickup range
+        Collider[] hitColliders = Physics.OverlapSphere(_playerObject.transform.position, _pickupProximityDistance);
+        foreach (Collider hitCollider in hitColliders)
+        {
+            KleptoScript item = hitCollider.GetComponent<KleptoScript>();
+            if (item != null && !item._isItemPickedUp)
             {
-                _doorBehavior.SlamDoor();  // Trigger door slamming
+                _heldItem = item;
+                _heldItem.OnPickup(_holdPosition);
+                Debug.Log("Picked up item: " + _heldItem.name);
+                break;
             }
+        }
+    }
+
+    private void DropItem()
+    {
+        if (_heldItem != null)
+        {
+            _heldItem.OnDrop();
+            Debug.Log("Dropped item: " + _heldItem.name);
+            _heldItem = null;
         }
     }
 }

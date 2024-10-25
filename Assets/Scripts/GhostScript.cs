@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,14 @@ namespace Sample
         public float _speedMultiplier = 1.0f;
         public float _rotationSpeed = 720.0f;
         public bool _isFloating = false;
+
+        //Teleportation Mode and implementation
+        public float _slowTimeScale = 0.1f;
+        public Image _screenDarkOverlay; // Reference to the dark overlay
+        public float _darkAlpha = 0.5f;
+        [SerializeField]
+        private bool _isTeleportModeActive = false;
+
 
         // Gravity variables
         private float _gravity = -9.81f;
@@ -45,7 +54,6 @@ namespace Sample
         [SerializeField]
         private bool _isVisible = false;  // To track if ghost is currently visible
         private Coroutine _visibilityCoroutine = null;
-        private bool _manualFadeOut = false; // NEW: Tracks if manual fade-out has been triggered
 
         void Start()
         {
@@ -65,33 +73,65 @@ namespace Sample
             HandleVisibility();
             PlayerAttack();
             ToggleFloating();
+            HandleTeleportation();
+        }
+
+        private void HandleTeleportation()
+        {
+            if (Input.GetKeyDown(KeyCode.T) && !_isTeleportModeActive)
+            {
+                Debug.Log("T key pressed, entering teleport mode");
+                EnterTeleportMode();
+            }
+            else if (Input.GetKeyUp(KeyCode.T) && _isTeleportModeActive)
+            {
+                ExitTeleportMode();
+                Debug.Log("T key released");
+            }
+        }
+
+        private void EnterTeleportMode()
+        {
+            //slow time
+            Time.timeScale = _slowTimeScale;
+
+            //Darken screen
+            Color overlayColor = _screenDarkOverlay.color;
+            overlayColor.a = _darkAlpha; // partially transparent
+            _screenDarkOverlay.color = overlayColor;
+        }
+
+        private void ExitTeleportMode()
+        {
+            //Return to normal time
+            Time.timeScale = 1.0f;
+
+            //remove darkening effect
+            Color overlayColor = _screenDarkOverlay.color;
+            overlayColor.a = 0; // fully transparent again
+            _screenDarkOverlay.color = overlayColor;
+
+            _isTeleportModeActive = false;
         }
 
         private void HandleVisibility()
         {
-            // NEW: Check if the ghost is visible and we want to make it invisible manually
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !_isOnCooldown)
+            // Only trigger visibility if not visible and not on cooldown
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !_isOnCooldown && !_isVisible)
             {
-                // If ghost is already visible, fade back out manually
-                if (_isVisible)
+                if (_visibilityCoroutine != null)
                 {
-                    _manualFadeOut = true;
+                    StopCoroutine(_visibilityCoroutine);  // Stop any existing coroutine
                 }
-                else if (!_isVisible)
-                {
-                    if (_visibilityCoroutine != null)
-                    {
-                        StopCoroutine(_visibilityCoroutine);  // Stop any existing coroutine
-                    }
 
-                    // Start the visibility coroutine to handle fading in and back out
-                    _visibilityCoroutine = StartCoroutine(FadeToOpaqueAndThenBack());
-                }
+                // Start the visibility coroutine to handle fading in and back out
+                _visibilityCoroutine = StartCoroutine(FadeToOpaqueAndThenBack());
             }
         }
 
         private IEnumerator FadeToOpaqueAndThenBack()
         {
+            // Mark the ghost as visible
             _isVisible = true;
 
             // Fade to opaque
@@ -104,16 +144,8 @@ namespace Sample
                 yield return null;
             }
 
-            // Stay visible until duration or manual fade-out
-            float visibilityTimer = 0f;
-            while (visibilityTimer < _visibilityDuration && !_manualFadeOut)
-            {
-                visibilityTimer += Time.deltaTime;
-                yield return null;
-            }
-
-            // Reset manual fade-out flag
-            _manualFadeOut = false;
+            // Stay visible for the duration of _visibilityDuration
+            yield return new WaitForSeconds(_visibilityDuration);
 
             // Fade back to transparent
             elapsedTime = 0.0f;
