@@ -2932,9 +2932,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aeed22594c00244cb54e0890b801275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerObject: {fileID: 0}
+  _playerObject: {fileID: 887996724}
   _proximityDistance: 5
-  _pickupProximityDistance: 1.5
+  _pickupProximityDistance: 2
   _holdPosition: {fileID: 936949447}
 --- !u!1 &1472761324
 GameObject:
