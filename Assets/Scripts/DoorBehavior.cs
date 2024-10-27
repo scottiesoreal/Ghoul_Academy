@@ -2,30 +2,34 @@
 
 public class DoorBehavior : MonoBehaviour
 {
-    // Is the door currently open or closed?
-    private bool _isOpen = false;
+    public GameObject door;
+    [SerializeField]
+    private float openRot;
+    [SerializeField]
+    private float closeRot;
+    [SerializeField]
+    private float speed;
+    [SerializeField]
+    private bool opening;
 
-    // This method is triggered when the player interacts with the door
-    public void ToggleDoor()
+    private void Update()
     {
-        if (_isOpen)
+        Vector3 currentRot = door.transform.localEulerAngles;
+        if (opening)
         {
-            // Close the door
-            Debug.Log("The door is now closed.");
+            // Open the door by rotating towards openRot on the y-axis
+            if (currentRot.y < openRot)
+            {
+                door.transform.localEulerAngles = Vector3.Lerp(currentRot, new Vector3(currentRot.x, openRot, currentRot.z), speed * Time.deltaTime);
+            }
         }
         else
         {
-            // Open the door
-            Debug.Log("The door is now open.");
+            // Close the door by rotating towards closeRot on the y-axis
+            if (currentRot.y > closeRot)
+            {
+                door.transform.localEulerAngles = Vector3.Lerp(currentRot, new Vector3(currentRot.x, closeRot, currentRot.z), speed * Time.deltaTime);
+            }
         }
-
-        _isOpen = !_isOpen; // Toggle the door state
-    }
-
-    // This method will simulate slamming the door
-    public void SlamDoor()
-    {
-        Debug.Log("The door is slammed shut!");
-        _isOpen = false; // Ensure the door is closed after slamming
     }
 }
