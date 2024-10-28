@@ -16,7 +16,6 @@ public class ObjectInteractions : MonoBehaviour
     // Cached component references for different interaction types
     private KineticBehavior _kineticBehavior;
     private ElectronicBehavior _electronicBehavior;
-    private DoorBehavior _doorBehavior;
 
     // Reference for item interactions with KleptoScript
     private KleptoScript _detectedItem = null; // Currently detected item
@@ -37,7 +36,6 @@ public class ObjectInteractions : MonoBehaviour
         // Cache the component references
         _kineticBehavior = GetComponent<KineticBehavior>();
         _electronicBehavior = GetComponent<ElectronicBehavior>();
-        _doorBehavior = GetComponent<DoorBehavior>();
     }
 
     void Update()
@@ -86,22 +84,10 @@ public class ObjectInteractions : MonoBehaviour
             _electronicBehavior.TogglePower();
         }
 
-        // Check for door interaction (opening/closing) with key 'O'
-        if (Input.GetKeyDown(KeyCode.O) && _doorBehavior != null)
-        {
-            _doorBehavior.ToggleDoor();
-        }
-
         // Check for tossing the object with key 'G'
         if (Input.GetKeyDown(KeyCode.G) && _kineticBehavior != null)
         {
             _kineticBehavior.TossObject();
-        }
-
-        // Check for slamming the door with key 'P'
-        if (Input.GetKeyDown(KeyCode.P) && _doorBehavior != null)
-        {
-            _doorBehavior.SlamDoor();
         }
     }
 
