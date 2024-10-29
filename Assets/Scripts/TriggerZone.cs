@@ -62,8 +62,9 @@ public class TriggerZone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Check if the player enters the trigger zone and make walls transparent
-        if (other.CompareTag("Player"))        {
-            
+        if (other.CompareTag("Player"))
+        {
+
             MakeWallsTransparent(); // Existing functionality for player
         }
 
