@@ -55,6 +55,8 @@ namespace Sample
         private bool _isVisible = false;  // To track if ghost is currently visible
         private Coroutine _visibilityCoroutine = null;
 
+        private Camera _mainCamera;
+
         void Start()
         {
             Anim = this.GetComponent<Animator>();
@@ -62,7 +64,7 @@ namespace Sample
             _HPtext = GameObject.Find("Canvas/_HP").GetComponent<Text>();
             _HPtext.text = "_HP " + _HP.ToString();
 
-            // Apply the initial _ghostTransparency value when the game starts
+            _mainCamera = Camera.main; // Access the main camera
             ApplyTransparency(_ghostTransparency);
         }
 
