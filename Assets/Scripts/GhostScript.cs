@@ -55,7 +55,7 @@ namespace Sample
         private bool _isVisible = false;  // To track if ghost is currently visible
         private Coroutine _visibilityCoroutine = null;
 
-        private Camera _mainCamera;
+        public Camera _mainCamera;
 
         void Start()
         {
@@ -75,45 +75,7 @@ namespace Sample
             HandleVisibility();
             PlayerAttack();
             ToggleFloating();
-            HandleTeleportation();
-        }
-
-        private void HandleTeleportation()
-        {
-            if (Input.GetKeyDown(KeyCode.T) && !_isTeleportModeActive)
-            {
-                Debug.Log("T key pressed, entering teleport mode");
-                EnterTeleportMode();
-            }
-            else if (Input.GetKeyUp(KeyCode.T) && _isTeleportModeActive)
-            {
-                ExitTeleportMode();
-                Debug.Log("T key released");
-            }
-        }
-
-        private void EnterTeleportMode()
-        {
-            //slow time
-            Time.timeScale = _slowTimeScale;
-
-            //Darken screen
-            Color overlayColor = _screenDarkOverlay.color;
-            overlayColor.a = _darkAlpha; // partially transparent
-            _screenDarkOverlay.color = overlayColor;
-        }
-
-        private void ExitTeleportMode()
-        {
-            //Return to normal time
-            Time.timeScale = 1.0f;
-
-            //remove darkening effect
-            Color overlayColor = _screenDarkOverlay.color;
-            overlayColor.a = 0; // fully transparent again
-            _screenDarkOverlay.color = overlayColor;
-
-            _isTeleportModeActive = false;
+            
         }
 
         private void HandleVisibility()
@@ -191,8 +153,19 @@ namespace Sample
             if (Input.GetKey(KeyCode.LeftArrow)) { moveHorizontal = -1f; }
             else if (Input.GetKey(KeyCode.RightArrow)) { moveHorizontal = 1f; }
 
-            // Calculate the movement vector
-            Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+            // Get camera-relative directions
+            Vector3 cameraForward = _mainCamera.transform.forward;
+            Vector3 cameraRight = _mainCamera.transform.right;
+
+            // Flatten these vectors to keep movement parallel to the ground
+            cameraForward.y = 0f;
+            cameraRight.y = 0f;
+
+            cameraForward.Normalize();
+            cameraRight.Normalize();
+
+            // Calculate the movement vector in alignment with camera direction
+            Vector3 movement = cameraForward * moveVertical + cameraRight * moveHorizontal;
             float speed = movement.magnitude;
 
             // Set speed in the animator
@@ -219,7 +192,12 @@ namespace Sample
 
             // Apply vertical movement (floating or gravity)
             Ctrl.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
+
+            // Debug rays to visualize direction
+            Debug.DrawRay(transform.position, cameraForward * 6, Color.blue); // Forward
+            Debug.DrawRay(transform.position, cameraRight * 6, Color.red);    // Right
         }
+
 
         private void ApplyGravity()
         {
