@@ -193,9 +193,7 @@ namespace Sample
             // Apply vertical movement (floating or gravity)
             Ctrl.Move(new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
 
-            // Debug rays to visualize direction
-            Debug.DrawRay(transform.position, cameraForward * 6, Color.blue); // Forward
-            Debug.DrawRay(transform.position, cameraRight * 6, Color.red);    // Right
+            
         }
 
 
