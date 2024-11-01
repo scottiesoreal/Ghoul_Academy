@@ -4,58 +4,48 @@ using UnityEngine;
 
 public class ObjectInteractions : MonoBehaviour
 {
-    // Reference to the player object (assign in Unity Inspector)
     public GameObject _playerObject;
 
-    // Proximity distances for interactions
     [SerializeField]
-    private float _proximityDistance = 5.0f;      // General interaction proximity
+    private float _proximityDistance = 5.0f;
     [SerializeField]
-    private float _pickupProximityDistance = 2.0f; // Specific distance for item pickup
+    private float _pickupProximityDistance = 2.0f;
 
-    // Cached component references for different interaction types
     private KineticBehavior _kineticBehavior;
     private ElectronicBehavior _electronicBehavior;
 
-    // Reference for item interactions with KleptoScript
-    private KleptoScript _detectedItem = null; // Currently detected item
-    private KleptoScript _heldItem = null;     // Currently held item
+    private KleptoScript _detectedItem = null;
+    private KleptoScript _heldItem = null;
 
-    // Hold position for item
     [SerializeField]
     private Transform _holdPosition;
 
     void Start()
     {
-        // Optional: Assign the player object automatically if not assigned in the Inspector
         if (_playerObject == null)
         {
             _playerObject = GameObject.FindWithTag("Player");
         }
 
-        // Cache the component references
         _kineticBehavior = GetComponent<KineticBehavior>();
         _electronicBehavior = GetComponent<ElectronicBehavior>();
     }
 
     void Update()
     {
-        // Calculate distance between player and object
         float distance = Vector3.Distance(transform.position, _playerObject.transform.position);
 
-        // Check if player is within general proximity distance
+        // General proximity check
         if (distance <= _proximityDistance)
         {
-            Debug.Log("Player near object");
+            Debug.Log("Player is near: " + gameObject.name);
 
-            // Handle other interactions
             HandleObjectInteractions();
         }
 
-        // Check for item pickup/drop within closer pickup distance
+        // Pickup proximity check
         if (distance <= _pickupProximityDistance)
         {
-            // Check for item pickup/drop with key 'E'
             if (Input.GetKeyDown(KeyCode.E))
             {
                 if (_heldItem == null)
@@ -72,28 +62,30 @@ public class ObjectInteractions : MonoBehaviour
 
     private void HandleObjectInteractions()
     {
-        // Check for kinetic interaction (shaking) with key 'H'
+        // Kinetic interaction
         if (Input.GetKeyDown(KeyCode.H) && _kineticBehavior != null)
         {
+            Debug.Log("Triggered Kinetic Interaction on: " + gameObject.name);
             _kineticBehavior.TriggerKineticAction();
         }
 
-        // Check for electronic interaction (e.g., power toggle) with key 'T'
+        // Electronic interaction
         if (Input.GetKeyDown(KeyCode.T) && _electronicBehavior != null)
         {
+            Debug.Log("Toggled power on: " + gameObject.name);
             _electronicBehavior.TogglePower();
         }
 
-        // Check for tossing the object with key 'G'
+        // Toss interaction
         if (Input.GetKeyDown(KeyCode.G) && _kineticBehavior != null)
         {
+            Debug.Log("Tossed object: " + gameObject.name);
             _kineticBehavior.TossObject();
         }
     }
 
     private void TryPickupItem()
     {
-        // Detect nearby items with KleptoScript within pickup range
         Collider[] hitColliders = Physics.OverlapSphere(_playerObject.transform.position, _pickupProximityDistance);
         foreach (Collider hitCollider in hitColliders)
         {

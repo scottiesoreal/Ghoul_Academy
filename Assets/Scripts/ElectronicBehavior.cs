@@ -9,6 +9,8 @@ public class ElectronicBehavior : MonoBehaviour
     {
         _isPoweredOn = !_isPoweredOn;  // Flip the power state
 
+        Debug.Log("Toggling power for: " + gameObject.name);
+
         if (_isPoweredOn)
         {
             Debug.Log("Power ON: " + gameObject.name);  // Placeholder: Log the power state

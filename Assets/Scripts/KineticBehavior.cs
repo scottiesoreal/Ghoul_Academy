@@ -61,6 +61,8 @@ public class KineticBehavior : MonoBehaviour
     {
         float elapsedTime = 0.0f;  // Timer for how long the object has been shaking
 
+        Debug.Log("Bumping object:" + gameObject.name); // Log the object name (for debugging purposes)
+
         while (elapsedTime < _shakeDuration)
         {
             // Calculate the new X position based on a sine wave for smooth shaking
