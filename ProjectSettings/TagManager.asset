@@ -13,6 +13,7 @@ TagManager:
   - Room
   - ExorcistNPC
   - Door
+  - Interactable
   layers:
   - Default
   - TransparentFX

@@ -61,8 +61,8 @@ namespace Sample
         {
             Anim = this.GetComponent<Animator>();
             Ctrl = this.GetComponent<CharacterController>();
-            _HPtext = GameObject.Find("Canvas/_HP").GetComponent<Text>();
-            _HPtext.text = "_HP " + _HP.ToString();
+        //    _HPtext = GameObject.Find("Canvas/_HP").GetComponent<Text>();
+        //    _HPtext.text = "_HP " + _HP.ToString();
 
             _mainCamera = Camera.main; // Access the main camera
             ApplyTransparency(_ghostTransparency);
