@@ -22,7 +22,8 @@ public class NPCMovement : MonoBehaviour
     // Startled behavior
     [SerializeField]
     private bool _isStartled = false; // Track if the NPC is startled
-    private float _jumpForce = 5f;
+    [SerializeField]
+    private float _jumpForce = .5f;
     private Rigidbody _rb;
 
     // NavMeshAgent variables
