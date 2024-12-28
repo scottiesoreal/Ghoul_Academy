@@ -97,6 +97,7 @@ namespace Sample
         {
             // Mark the ghost as visible
             _isVisible = true;
+            Debug.Log("Ghost is visible!");
 
             // Fade to opaque
             float elapsedTime = 0.0f;
@@ -123,6 +124,7 @@ namespace Sample
 
             // Mark the ghost as no longer visible
             _isVisible = false;
+            Debug.Log("Ghost is no longer visible!");
 
             // Start cooldown
             _isOnCooldown = true;
