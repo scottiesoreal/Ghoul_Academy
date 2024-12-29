@@ -49,6 +49,7 @@ public class NPCVision : MonoBehaviour
         // Visualize the ray
         Debug.DrawRay(transform.position, directionToPlayer.normalized * _visionDistance, Color.red);
 
+
         // Check if player is within NPC's field of view
         if (angleToPlayer < _visionAngle / 2 && distanceToPlayer <= _visionDistance)
         {
@@ -100,5 +101,5 @@ public class NPCVision : MonoBehaviour
     public bool CanSeePlayer()
     {
         return _canSeePlayer;
-    }
+    }                                                                             
 }

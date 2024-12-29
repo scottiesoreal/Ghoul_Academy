@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +7,9 @@ namespace Sample
 {
     public class GhostScript : MonoBehaviour
     {
+        
+        // Integration test: ChatGPT GitHub Sync - Version 1.0//
+        
         private Animator Anim;
         private CharacterController Ctrl;
         private Vector3 MoveDirection = Vector3.zero;
@@ -77,7 +79,7 @@ namespace Sample
             ToggleFloating();
             
         }
-
+        
         private void HandleVisibility()
         {
             // Only trigger visibility if not visible and not on cooldown
@@ -97,7 +99,7 @@ namespace Sample
         {
             // Mark the ghost as visible
             _isVisible = true;
-            Debug.Log("Ghost is visible!");
+            Debug.Log("Ghost can be seen visible!");
 
             // Fade to opaque
             float elapsedTime = 0.0f;
