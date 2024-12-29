@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ namespace Sample
         
         // Integration test: ChatGPT GitHub Sync - Version 1.0//
         
+        // TODO: Placeholder for future integration test - Add new ghost ability here
+
         private Animator Anim;
         private CharacterController Ctrl;
         private Vector3 MoveDirection = Vector3.zero;
