@@ -36,36 +36,36 @@ public class NPCVision : MonoBehaviour
 
     private void CheckPlayerVisibility()
     {
-        // Calculate the direction and distance to the player
+        // Calculate the direction to the player
         Vector3 directionToPlayer = _player.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
 
-        // Get the forward vector of the NPC
-        Vector3 forward = transform.forward;
+        // Get the angle between the NPC's forward direction and the direction to the player
+        float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
 
-        // Calculate the angle between the NPC's forward vector and the direction to the player
-        float angleToPlayer = Vector3.Angle(forward, directionToPlayer);
+        // Only consider objects in the "Ghost" layer
+        int layerMask = LayerMask.GetMask("Ghost");
 
-        // Visualize the ray
-        Debug.DrawRay(transform.position, directionToPlayer.normalized * _visionDistance, Color.red);
+        // Visualize the NPC's forward direction
+        Debug.DrawRay(transform.position + Vector3.up * 1.0f, transform.forward * _visionDistance, Color.blue); // NPC's forward view
+        Debug.DrawRay(transform.position + Vector3.up * 1.0f, directionToPlayer.normalized * _visionDistance, Color.red); // Toward ghost (optional)
 
-        // Check if player is within NPC's field of view
+        // Check if the player is within the NPC's field of view
         if (angleToPlayer < _visionAngle / 2 && distanceToPlayer <= _visionDistance)
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, directionToPlayer.normalized, out hit, distanceToPlayer))
+            if (Physics.Raycast(transform.position + Vector3.up * 1.0f, directionToPlayer.normalized, out hit, _visionDistance, layerMask))
             {
                 Debug.Log("Raycast hit object: " + hit.collider.name);
 
-                if (hit.collider.CompareTag("Player"))
+                if (hit.collider.CompareTag("Player")) // Assuming the ghost has the "Player" tag
                 {
                     // Get the GhostScript component to check visibility
                     GhostScript ghostScript = _player.GetComponent<GhostScript>();
 
-                    // Use the existing IsPlayerInvisible() method to check if the ghost is invisible
-                    if (ghostScript != null && ghostScript.IsVisible())  // Ensure the ghost is visible
+                    if (ghostScript != null && ghostScript.IsVisible()) // Ensure the ghost is visible
                     {
-                        Debug.Log("Ghost is visible.");
+                        Debug.Log("Ghost is visible and within field of view.");
 
                         if (!_canSeePlayer)
                         {
@@ -93,9 +93,10 @@ public class NPCVision : MonoBehaviour
         else
         {
             _canSeePlayer = false;
-            Debug.Log("Raycast did not hit any object.");
+            Debug.Log("Player is outside the NPC's field of view.");
         }
     }
+
 
     public bool CanSeePlayer()
     {
