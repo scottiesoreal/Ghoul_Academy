@@ -74329,6 +74329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1749792529243169266, guid: 53ddc085d53871f4094de036ee157525,
         type: 3}
+      propertyPath: _spookhealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1749792529243169266, guid: 53ddc085d53871f4094de036ee157525,
+        type: 3}
       propertyPath: churchLocation
       value: 
       objectReference: {fileID: 1580922972}

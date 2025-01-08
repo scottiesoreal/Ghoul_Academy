@@ -20,6 +20,7 @@ public class NPCMovement : MonoBehaviour
     private LookDirection _currentDirection = LookDirection.Forward;
 
     // Startled behavior
+    
     [SerializeField]
     private bool _isStartled = false; // Track if the NPC is startled
     [SerializeField]

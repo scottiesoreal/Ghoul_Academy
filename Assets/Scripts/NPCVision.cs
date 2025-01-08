@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sample;
+using UnityEngine.Serialization;
 
 public class NPCVision : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class NPCVision : MonoBehaviour
     private float _visionDistance = 10f;  // How far the NPC can see
     [SerializeField]
     private float _visionAngle = 120f;  // NPC's field of view
+    [SerializeField]
+    private float _spookDamageCoolDown = 3f;
 
+    private float _nextSpookDamageTime = 0f; // Time to apply spook damage
     private NPCMovement _npcMovement;  // Reference to NPCMovement script
     private bool _canSeePlayer = false;  // Tracks if the NPC can see the player
 
@@ -67,35 +71,40 @@ public class NPCVision : MonoBehaviour
                     {
                         Debug.Log("Ghost is visible and within field of view.");
 
-                        if (!_canSeePlayer)
+                        // Handle spook health decrement
+                        SpookHealth spookHealth = GetComponent<SpookHealth>();
+                        if (spookHealth != null)
                         {
-                            _npcMovement.StartleJump();
-                            Debug.Log("NPC was startled by the visible ghost and is running to the exit.");
-                            _npcMovement.RunToExit();
-                        }
+                            spookHealth.TakeSpookDamage(1f); // Apply damage
+                            _nextSpookDamageTime = Time.time + _spookDamageCoolDown; // Set next allowed damage time
+                            Debug.Log($"Spook damage applied. Next damage allowed after: {_nextSpookDamageTime}");
 
-                        _canSeePlayer = true;
-                        Debug.Log("NPC can see the ghost.");
+
+                            // Trigger fleeing only at zero health
+                            if (spookHealth.GetCurrentHealth() <= 0)
+                            {
+                                Debug.Log("NPC is terrified and will flee!");
+                                _npcMovement.RunToExit(); // Trigger the NPC's fleeing behavior
+                            }
+                        }
                     }
                     else
                     {
-                        _canSeePlayer = false;
                         Debug.Log("Ghost is invisible, NPC cannot see the ghost.");
                     }
                 }
                 else
                 {
-                    _canSeePlayer = false;
                     Debug.Log("Raycast hit something else, NPC cannot see the ghost.");
                 }
             }
         }
         else
         {
-            _canSeePlayer = false;
             Debug.Log("Player is outside the NPC's field of view.");
         }
     }
+
 
 
     public bool CanSeePlayer()
